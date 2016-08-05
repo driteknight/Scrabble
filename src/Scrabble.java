@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class Scrabble {
-	
+
 	final static HashMap<Character, Integer> letterScore = new HashMap<Character, Integer>() {
 		{
 			put('A', 1);
@@ -36,41 +36,48 @@ public class Scrabble {
 			put('X', 8);
 			put('Q', 20);
 			put('Z', 10);
-			
+
 		}
 	};
 
-	private static Set<String> allWords; 
-	
+	private static Set<String> allWords;
+
 	private String getSorted(String word) {
 		char[] wordArray = word.toCharArray();
 		Arrays.sort(wordArray);
 		return String.valueOf(wordArray);
 	}
-	
+
 	private void getAllWords(String fileName) throws IOException {
 		File file = new File(fileName);
 		BufferedReader br = new BufferedReader(new FileReader(file));
-		String line  = null;
-		
-		while((line = br.readLine()) != null) {
+		String line = null;
+
+		while ((line = br.readLine()) != null) {
 			allWords.add(getSorted(line));
 		}
 	}
-	
-	
-	
+
 	private boolean isWord(String word) {
 		return allWords.contains(word);
 	}
-	
-	private int getScore(String str) {
-		return null;
+
+	private int getScore(String word) {
+		int score = 0;
+		if (isWord(word)) {
+			for (int i = 0; i < word.length(); i++) {
+				score += letterScore.get(word.charAt(i));
+			}
+		}
+
+		return score;
 	}
 	
-	
-	
+	private Set<String> getAllCombinations(String tileSet) {
+		return null;
+	}
+
 	public static void main(String args[]) {
-		
+
 	}
 }
