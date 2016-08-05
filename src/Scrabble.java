@@ -77,7 +77,12 @@ public class Scrabble {
 		return null;
 	}
 
-	public static void main(String args[]) {
-
+	public static void main(String[] args) {
+		Scanner input = new Scanner(System.in);
+		String word = input.next();
+		Scrabble game = new Scrabble(string);
+		String output = getMaxScoreString(game);
+		System.out.println(output+" "+new Scrabble(output).getScore());
+		input.close();
 	}
 }
