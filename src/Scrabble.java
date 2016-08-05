@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -41,7 +42,7 @@ public class Scrabble {
 		}
 	};
 
-	private static Set<String> allWords;
+	private static Set<String> allWords = new HashSet<String>();
 
 	private String getSorted(String word) {
 		char[] wordArray = word.toCharArray();
@@ -50,13 +51,14 @@ public class Scrabble {
 	}
 
 	private void getAllWords(String fileName) throws IOException {
+		
 		File file = new File(fileName);
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		String line = null;
-
 		while ((line = br.readLine()) != null) {
 			allWords.add(getSorted(line));
 		}
+		br.close();
 	}
 
 	private boolean isWord(String word) {
@@ -73,23 +75,51 @@ public class Scrabble {
 
 		return score;
 	}
-	
+
 	private Set<String> getAllCombinations(String tileSet) {
-		return null;
+		Set<String> words = new HashSet<String>();
+
+		for (int i = 0; i < tileSet.length(); i++) {
+
+			words = addLetter(tileSet.charAt(i), words);
+		}
+
+		return words;
+	}
+
+	private Set<String> addLetter(char charAt, Set<String> words) {
+		Set<String> newWords = new HashSet<String>();
+		for (String word : words) {
+			for (int i = 0; i < word.length(); i++) {
+				StringBuilder str = new StringBuilder(word);
+				newWords.add(getSorted(str.insert(i, charAt).toString()));
+			}
+		}
+		newWords.add(String.valueOf(charAt));
+		newWords.addAll(words);
+		return newWords;
 	}
 
 	public static void main(String[] args) throws IOException {
-		Scanner input = new Scanner(System.in);
-		String word = input.next();
 		Scrabble game = new Scrabble();
-		game.getAllWords(args[0]);
-		String output = game.getMaxScoreString(word);
+		String filePath = args[0];
+		game.getAllWords(filePath);
+		String tileSet = args[1];
+		int output = game.getMaxScore(tileSet);
 		System.out.println("Max Score : " + output);
-		input.close();
 	}
 
-	private String getMaxScoreString(String word) {
-		// TODO Auto-generated method stub
-		return null;
+	private int getMaxScore(String word) {
+
+		int maxScore = 0;
+		Set<String> tileSetWords = getAllCombinations(word);
+		for (String str : tileSetWords) {
+			int score = getScore(str);
+			if (maxScore < score) {
+				maxScore = score;
+			}
+		}
+
+		return maxScore;
 	}
 }
