@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Scanner;
 import java.util.Set;
 
 public class Scrabble {
@@ -77,7 +78,18 @@ public class Scrabble {
 		return null;
 	}
 
-	public static void main(String args[]) {
-		
+	public static void main(String[] args) throws IOException {
+		Scanner input = new Scanner(System.in);
+		String word = input.next();
+		Scrabble game = new Scrabble();
+		game.getAllWords(args[0]);
+		String output = game.getMaxScoreString(word);
+		System.out.println("Max Score : " + output);
+		input.close();
+	}
+
+	private String getMaxScoreString(String word) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
